@@ -77,6 +77,11 @@ button:active {
   color: var(--cor-fundo);
 }
 
+.caixa-resultado {
+  display: none;
+  margin-top: 20px;
+}
+
 .texto-resultado {
   font-size: 1.1rem;
   line-height: 1.6;

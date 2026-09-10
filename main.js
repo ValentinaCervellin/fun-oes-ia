@@ -79,16 +79,18 @@ const perguntas = [
 
 let atual = 0;
 let perguntaAtual;
-let historicoAfirmacoes = []; // Guarda as escolhas do usuário
+let historicoAfirmacoes = [];
 
 function mostraPergunta() {
   if (atual >= perguntas.length) {
     mostraResultado();
     return;
   }
+
   perguntaAtual = perguntas[atual];
   caixaPerguntas.textContent = perguntaAtual.enunciado;
   caixaAlternativas.textContent = "";
+  caixaResultado.style.display = "none";
   mostraAlternativas();
   mostraBotaoVoltar();
 }
@@ -96,6 +98,7 @@ function mostraPergunta() {
 function mostraAlternativas() {
   for (const alternativa of perguntaAtual.alternativas) {
     const botaoAlternativas = document.createElement("button");
+    botaoAlternativas.type = "button";
     botaoAlternativas.textContent = alternativa.texto;
     botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa));
     caixaAlternativas.appendChild(botaoAlternativas);
@@ -103,15 +106,15 @@ function mostraAlternativas() {
 }
 
 function respostaSelecionada(opcaoSelecionada) {
-  historicoAfirmacoes.push(opcaoSelecionada.afirmacao); // Adiciona a resposta ao histórico
+  historicoAfirmacoes.push(opcaoSelecionada.afirmacao);
   atual++;
   mostraPergunta();
 }
 
 function mostraBotaoVoltar() {
-  // Exibe o botão de voltar apenas se não estiver na primeira pergunta
   if (atual > 0) {
     const botaoVoltar = document.createElement("button");
+    botaoVoltar.type = "button";
     botaoVoltar.textContent = "← Voltar";
     botaoVoltar.classList.add("botao-voltar");
     botaoVoltar.addEventListener("click", voltarPergunta);
@@ -122,15 +125,18 @@ function mostraBotaoVoltar() {
 function voltarPergunta() {
   if (atual > 0) {
     atual--;
-    historicoAfirmacoes.pop(); // Remove a última escolha do histórico
+    historicoAfirmacoes.pop();
     mostraPergunta();
   }
 }
 
 function mostraResultado() {
   caixaPerguntas.textContent = "Em 2030...";
-  textoResultado.textContent = historicoAfirmacoes.join(" "); // Junta todas as afirmações
+  textoResultado.textContent = historicoAfirmacoes.length
+    ? historicoAfirmacoes.join(" ")
+    : "Você ainda não respondeu às perguntas.";
   caixaAlternativas.textContent = "";
+  caixaResultado.style.display = "block";
 }
 
 mostraPergunta();
